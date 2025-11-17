@@ -1,0 +1,64 @@
+<%- include('../partials/header', { title: title }) %>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="card shadow-sm">
+      <div class="card-header">
+        <h3>Detail User & API Key</h3>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <strong>First Name:</strong> <%= detail.first_name %>
+          </li>
+          <li class="list-group-item">
+            <strong>Last Name:</strong> <%= detail.last_name %>
+          </li>
+          <li class="list-group-item">
+            <strong>Email:</strong> <%= detail.email %>
+          </li>
+          <li class="list-group-item">
+            <strong>API Key:</strong>
+            <pre class="bg-light p-2 rounded mt-1"><code><%= detail.api_key %></code></pre>
+          </li>
+          <li class="list-group-item">
+            <strong>Status:</strong>
+            <% if (detail.status === 'valid') { %>
+              <span class="badge bg-success">Valid</span>
+            <% } else { %>
+              <span class="badge bg-danger">Invalid</span>
+            <% } %>
+          </li>
+          <li class="list-group-item">
+            <strong>Start Date:</strong> <%= new Date(detail.start_date).toLocaleDateString('id-ID') %>
+          </li>
+          <li class="list-group-item">
+            <strong>End Date:</strong> <%= new Date(detail.end_date).toLocaleDateString('id-ID') %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow-sm border-danger">
+      <div class="card-header bg-danger text-white">
+        Aksi Berbahaya
+      </div>
+      <div class="card-body">
+        <p>Menghapus API Key ini tidak dapat dibatalkan.</p>
+        
+        <form action="/admin/delete/<%= detail.id %>" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus key ini?');">
+          <button type="submit" class="btn btn-danger w-100">
+            Hapus API Key
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <a href="/admin/dashboard" class="btn btn-secondary w-100 mt-3">Kembali ke Dashboard</a>
+  </div>
+</div>
+
+
+<%- include('../partials/footer') %>

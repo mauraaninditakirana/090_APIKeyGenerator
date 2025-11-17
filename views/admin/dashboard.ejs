@@ -1,0 +1,52 @@
+<%- include('../partials/header', { title: title }) %>
+
+<h1 class="mb-4">Daftar API Keys</h1>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th scope="col">Nama Lengkap</th>
+            <th scope="col">Email</th>
+            <th scope="col">Status</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <% keys.forEach(key => { %>
+            <tr>
+              <td><%= key.first_name %> <%= key.last_name %></td>
+              <td><%= key.email %></td>
+              <td>
+                <% if (key.status === 'valid') { %>
+                  <span class="badge bg-success">Valid</span>
+                <% } else { %>
+                  <span class="badge bg-danger">Invalid</span>
+                <% } %>
+              </td>
+              <td><%= new Date(key.end_date).toLocaleDateString('id-ID') %></td>
+              <td>
+                <a href="/admin/detail/<%= key.id %>" class="btn btn-sm btn-primary">
+                  Lihat Detail
+                </a>
+              </td>
+            </tr>
+          <% }) %>
+
+          <% if (keys.length === 0) { %>
+            <tr>
+              <td colspan="5" class="text-center">Belum ada API Key yang dibuat.</td>
+            </tr>
+          <% } %>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
