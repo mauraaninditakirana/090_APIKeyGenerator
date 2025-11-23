@@ -12,7 +12,7 @@
     html, body {
       height: 100%;
       margin: 0;
-      overflow: hidden; /* Mencegah scrollbar muncul */
+      overflow: hidden; 
     }
 
     body {
@@ -20,11 +20,11 @@
       font-family: 'Poppins', sans-serif;
     }
 
-    /* Navbar styling yang lebih tipis */
+    /* Navbar styling */
     .navbar {
       background-color: rgba(255, 255, 255, 0.9);
       backdrop-filter: blur(10px);
-      height: 60px; /* Tinggi navbar fix */
+      height: 60px;
       border-bottom: 1px solid rgba(0,0,0,0.05);
     }
     
@@ -35,38 +35,38 @@
       font-size: 1.1rem;
     }
 
-    /* Wrapper utama untuk menengahkan Card */
+    /* Wrapper utama */
     .main-wrapper {
-      height: 100vh; /* Full tinggi layar */
+      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding-top: 60px; /* Kompensasi tinggi navbar */
+      padding-top: 60px; 
     }
 
-    /* Card styling yang lebih compact */
+    /* Card styling */
     .main-card {
       border: none;
       border-radius: 15px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       background: #ffffff;
       width: 100%;
-      max-width: 500px; /* Membatasi lebar agar tidak terlalu lebar */
+      max-width: 500px;
     }
 
     .card-header-custom {
       background: linear-gradient(to right, #4e54c8, #8f94fb);
       color: white;
-      padding: 1rem; /* Padding dikecilkan */
+      padding: 1rem;
       text-align: center;
       border-radius: 15px 15px 0 0;
     }
 
     .card-body {
-      padding: 1.5rem; /* Padding body dikecilkan */
+      padding: 1.5rem;
     }
 
-    /* Form control lebih tipis */
+    /* Form control */
     .form-control {
       font-size: 0.9rem;
       padding: 8px 12px;
@@ -80,7 +80,7 @@
       margin-bottom: 4px;
     }
 
-    /* API Key Box Compact */
+    /* API Key Box */
     .api-key-container {
       background-color: #2d3436;
       border-radius: 10px;
@@ -136,7 +136,7 @@
     }
     .btn-admin:hover { background-color: #000; color: white; }
 
-    /* Alert Compact */
+    /* Alert */
     .alert {
       padding: 0.5rem 1rem;
       font-size: 0.85rem;
@@ -148,7 +148,7 @@
 
   <nav class="navbar fixed-top">
     <div class="container">
-      <span class="brand-logo">🔑 APIKey Generator</span>
+      <span class="brand-logo">🔑 APIKEY GENERATOR</span>
       <a href="/admin/login" class="btn btn-admin shadow-sm">
         Login Admin
       </a>
@@ -179,17 +179,17 @@
             <div class="row mb-2">
               <div class="col-6">
                 <label for="first_name" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="your first name" required>
+                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Your First Name" required>
               </div>
               <div class="col-6">
                 <label for="last_name" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="your last name" required>
+                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Your Last Name" required>
               </div>
             </div>
 
             <div class="mb-3">
               <label for="email" class="form-label">Email Address</label>
-              <input type="email" class="form-control" id="email" name="email" placeholder="your email address" required>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Your Email Address" required>
             </div>
 
             <div class="api-key-container">
@@ -205,7 +205,7 @@
                 ⚡ Generate
               </button>
               <button type="submit" class="btn btn-save w-50">
-                💾 Save
+                💾 Simpan
               </button>
             </div>
 
@@ -219,22 +219,41 @@
     document.getElementById('generateBtn').addEventListener('click', function() {
       const btn = this;
       const originalText = btn.innerHTML;
+      
+      // 1. Ambil nilai input
+      const fName = document.getElementById('first_name').value.trim();
+      const lName = document.getElementById('last_name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const displayBox = document.getElementById('apiKeyDisplay');
+
+      // 2. CEK VALIDASI: Apakah kosong?
+      if (!fName || !lName || !email) {
+        displayBox.textContent = 'Harap isi semua data!';
+        displayBox.style.color = '#ff7675'; // Warna Merah Muda
+        // Berhenti di sini, jangan hubungi server
+        return; 
+      }
+
+      // 3. Jika data ada, lanjut loading...
       btn.disabled = true;
       btn.innerHTML = '🔄 ...';
+      
+      
+      displayBox.style.color = '#00cec9'; 
 
       fetch('/generate-key')
         .then(response => response.json())
         .then(data => {
           document.getElementById('apiKeyInput').value = data.apiKey;
-          document.getElementById('apiKeyDisplay').textContent = data.apiKey;
-          document.getElementById('apiKeyDisplay').style.color = '#55efc4';
+          displayBox.textContent = data.apiKey;
+          displayBox.style.color = '#55efc4'; 
           btn.disabled = false;
           btn.innerHTML = originalText;
         })
         .catch(err => {
           console.error(err);
-          document.getElementById('apiKeyDisplay').textContent = 'Error.';
-          document.getElementById('apiKeyDisplay').style.color = '#ff7675';
+          displayBox.textContent = 'Gagal koneksi server.';
+          displayBox.style.color = '#ff7675';
           btn.disabled = false;
           btn.innerHTML = originalText;
         });
